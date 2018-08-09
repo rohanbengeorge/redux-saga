@@ -7,10 +7,9 @@ const TEST_HINT =
 
 const makeEffect = (type, payload) => ({ [IO]: true, type, payload })
 
-const isForkEffect = eff => eff && eff[IO] && eff.type === 'FORK'
-
 export const detach = eff => {
   if (process.env.NODE_ENV === 'development') {
+    const isForkEffect = eff => is.effect(eff) && eff.type === effectTypes.FORK
     check(eff, isForkEffect, 'detach(eff): argument must be a fork effect')
   }
   eff.payload.detached = true
@@ -213,23 +212,3 @@ export function setContext(props) {
 }
 
 export const delay = call.bind(null, delayUtil)
-
-const createAsEffectType = type => effect => effect && effect[IO] && effect.type === type && effect.payload
-
-export const asEffect = {
-  take: createAsEffectType(effectTypes.TAKE),
-  put: createAsEffectType(effectTypes.PUT),
-  all: createAsEffectType(effectTypes.ALL),
-  race: createAsEffectType(effectTypes.RACE),
-  call: createAsEffectType(effectTypes.CALL),
-  cps: createAsEffectType(effectTypes.CPS),
-  fork: createAsEffectType(effectTypes.FORK),
-  join: createAsEffectType(effectTypes.JOIN),
-  cancel: createAsEffectType(effectTypes.CANCEL),
-  select: createAsEffectType(effectTypes.SELECT),
-  actionChannel: createAsEffectType(effectTypes.ACTION_CHANNEL),
-  cancelled: createAsEffectType(effectTypes.CANCELLED),
-  flush: createAsEffectType(effectTypes.FLUSH),
-  getContext: createAsEffectType(effectTypes.GET_CONTEXT),
-  setContext: createAsEffectType(effectTypes.SET_CONTEXT),
-}

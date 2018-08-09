@@ -1,4 +1,4 @@
-import { CANCEL, MULTICAST, SAGA_ACTION, TASK, TASK_CANCEL, TERMINATE } from './symbols'
+import { CANCEL, MULTICAST, SAGA_ACTION, TASK, TASK_CANCEL, TERMINATE, IO } from './symbols'
 
 export const konst = v => () => v
 export const kTrue = konst(true)
@@ -36,6 +36,7 @@ export const is = {
   stringableFunc: f => is.func(f) && hasOwn(f, 'toString'),
   symbol: sym => Boolean(sym) && typeof Symbol === 'function' && sym.constructor === Symbol && sym !== Symbol.prototype,
   multicast: ch => is.channel(ch) && ch[MULTICAST],
+  effect: eff => eff && eff[IO],
 }
 
 export const object = {
