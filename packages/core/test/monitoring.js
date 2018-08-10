@@ -2,6 +2,7 @@ import test from 'tape'
 import { createStore, applyMiddleware } from 'redux'
 import createSagaMiddleware, { runSaga, stdChannel } from '../src'
 import { arrayOfDeferred } from '../src/utils'
+import { root } from '../src/internal/io'
 import * as io from '../src/effects'
 
 function createSagaMonitor(ids, effects, actions) {
@@ -79,7 +80,7 @@ test('saga middleware monitoring', assert => {
     .toPromise()
     .then(() => {
       const expectedEffects = {
-        [ids[0]]: { parentEffectId: 0, label: undefined, effect: { root: true, saga: main, args: [] }, result: task },
+        [ids[0]]: { parentEffectId: 0, label: undefined, effect: root(main, []), result: task },
         [ids[1]]: { parentEffectId: ids[0], label: '', effect: io.call(api, 0), result: 'api1' },
         [ids[2]]: {
           parentEffectId: ids[0],

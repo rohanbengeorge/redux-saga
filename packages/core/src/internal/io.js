@@ -16,6 +16,10 @@ export const detach = eff => {
   return eff
 }
 
+export function root(saga, args) {
+  return makeEffect(effectTypes.ROOT, { saga, args })
+}
+
 export function take(patternOrChannel = '*', multicastPattern) {
   if (process.env.NODE_ENV === 'development' && arguments.length) {
     check(arguments[0], is.notUndef, 'take(patternOrChannel): patternOrChannel is undefined')

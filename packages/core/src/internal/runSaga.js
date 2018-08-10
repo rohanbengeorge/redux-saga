@@ -1,5 +1,6 @@
 import { compose } from 'redux'
 import { is, check, uid as nextSagaId, wrapSagaDispatch, noop, log as _log } from './utils'
+import { root } from './io'
 import proc, { getMetaInfo } from './proc'
 import { stdChannel } from './channel'
 
@@ -38,7 +39,7 @@ export function runSaga(options, saga, ...args) {
     sagaMonitor.effectCancelled = sagaMonitor.effectCancelled || noop
     sagaMonitor.actionDispatched = sagaMonitor.actionDispatched || noop
 
-    sagaMonitor.effectTriggered({ effectId, root: true, parentEffectId: 0, effect: { root: true, saga, args } })
+    sagaMonitor.effectTriggered({ effectId, parentEffectId: 0, effect: root(saga, args) })
   }
 
   if ((process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') && is.notUndef(effectMiddlewares)) {
